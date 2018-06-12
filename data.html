@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+		<!-- 引入 Bootstrap -->
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+		<!-- HTML5 Shiv 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+		<!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+		<!--[if lt IE 9]>
+         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+         <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+      <![endif]-->
+		<title></title>
+		<style type="text/css">
+			body {
+				background: url(http://10.187.1.157/img/bg10.jpg) 0% 0% / cover;
+				color: #fff;
+				font-family: 微软雅黑;
+			}
+			
+			#title {}
+			
+			.bor {
+				height: 1000px;
+				border: 1px solid #435d70;
+				background: url(http://10.187.1.157/img/bg.png);
+			}
+			
+			.title {
+				border: 1px solid #435d70;
+				text-align: center;
+				line-height: 22px;
+				border-radius: 4px;
+				margin-top: 5px;
+				cursor: default;
+			}
+			
+			.title:first-child:hover {
+				cursor: pointer;
+				color: #66AFE9;
+				border: 1px solid #14a3a8;
+			}
+			
+			.title:first-child {
+				margin-top: 8px;
+				border: 1px solid #5DA2C5;
+			}
+			
+			.bor1 {
+				height: 473px;
+				padding: 0;
+				border: 1px solid #435d70;
+				border-left: none;
+			}
+			
+			#zongshuju {
+				line-height: 30px;
+				font-size: 16px;
+				color: #FFFFFF;
+				text-align: center;
+			}
+			
+			#zongshuju span {
+				color: #e1c10f;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="container" style="margin-top: 100px;">
+			<div class="row clearfix">
+				<div class="col-md-12 column">
+					<div class="row clearfix">
+						<div class="col-md-2 column bor" style="padding: 2px 4px 2px 4px;">
+							<div class="title">
+								2017年
+							</div>
+							<div class="title">
+								2018年
+							</div>
+							<div class="title">
+								2019年
+							</div>
+						</div>
+						<div class="col-md-10 column bor" style="width: 82.53333333%;margin-left: 0.5%;">
+							<p style="text-align: center;line-height: 43px;font-size: 15px;;">河北省高校大学生学习体验调查原始数据</p>
+							<div class="row clearfix">
+								<div class="col-md-10 column bor1">
+									<p style="line-height: 25px;margin:20px 0 0 50px;border-left: 5px solid #39B3D7;text-indent:15px;font-size: 18px;">参与调查院校</p>
+									<p style="line-height: 100px;text-align: center;font-size: 40px;color: #e76565;font-weight: 900;">47所</p>
+									<p id="zongshuju">参与学生有效人数<span>65303</span>名，涉及专业<span>306</span>类，平均填卷时间<span>508</span>秒</p>
+									<div id="bodyDiv" style=" margin:0 auto;width:60%;height: 200px;margin-top: 40px;"> </div>
+								</div>
+								<!--<div class="col-md-4 column bor1">
+									<div id="renshu" style=" margin:0 auto;width:60%;height: 200px;margin-top: 40px;"> </div>
+								</div>-->
+							</div>
+							<div class="row clearfix">
+								<div class="col-md-10 column bor1" style="border-top: none;">
+									<p style="line-height: 25px;margin:20px 0 0 50px;border-left: 5px solid #39B3D7;text-indent:15px;font-size: 18px;">院校所在地区</p>
+									<div id="echartsPie" style=" margin:0 auto;width:80%;height: 200px;margin-top: 40px;"> </div>
+								</div>
+								<!--<div class="col-md-4 column bor1">
+									<div id="renshu" style=" margin:0 auto;width:60%;height: 200px;margin-top: 40px;"> </div>
+								</div>-->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<!-- jQuery (Bootstrap 的 JavaScript 插件需要引入 jQuery) -->
+	<script src="https://code.jquery.com/jquery.js"></script>
+	<script src="echarts.min.js" type="text/javascript" charset="utf-8"></script>
+
+</html>
+<script>
+	$(document).ready(function() {
+		randomData();
+	});
+
+	//产生随机数  
+	function randomData() {
+		var first = 32;
+		console.log(first)
+		var second = 15
+
+		var chartId = Math.floor(Math.random() * 1000 + 10000);
+		var pieName = ['超过', '未超过(含500秒)'];
+		var pieValue = new Array();
+		pieValue.push(first);
+		pieValue.push(second);
+		$("#bodyDiv").empty().append("<div id='pie" + chartId + "' style='width:100%;height:100%;'></div>");
+
+		buildChart(pieName, pieValue, chartId);
+	}
+
+	//生成圆环图  
+	function buildChart(pieName, pieValue, chartId) {
+		var pieData = new Array();
+		for(var i = 0; i < pieName.length; i++) {
+			pieData.push(eval('(' + ("{'value':" + pieValue[i] + ",'name':'" + pieName[i] + "'}") + ')'));
+		}
+		var pieChart = document.getElementById("pie" + chartId);
+		var echart = echarts.init(pieChart);
+		var option = {
+			title: {
+				text: '学生平均完成问卷时间是否超500秒的高校数量',
+				x: "center",
+				textStyle: { //设置主标题风格
+					color: '#ffffff', //设置主标题字体颜色
+					fontSize: '22px',
+				}
+			},
+			tooltip: {
+				trigger: 'item',
+				formatter: "{a} <br/>{b} : {c}所 ({d}%)"
+			},
+			legend: {
+				orient: 'horizontal',
+				x: "center",
+				y: "bottom",
+				data: pieName,
+				textStyle: { //设置主标题风格
+					color: '#ffffff', //设置主标题字体颜色
+					fontSize: '18px',
+				}
+			},
+			color: ['#39B3D7', '#e76565'],
+			series: [{
+				name: '类别',
+				type: 'pie',
+				radius: ['50%', '70%'],
+				center: ['50%', '50%'],
+				data: pieData,
+				itemStyle: {
+					emphasis: {
+						shadowBlur: 10,
+						shadowOffsetX: 0,
+						shadowColor: 'rgba(0, 0, 0, 0.5)'
+					}
+				}
+			}]
+		};
+
+		echart.setOption(option);
+	}
+
+	//window.setInterval(randomData(),1000);
+</script>
+<script>
+	var echartsPie;
+	var json = [{
+			value: 18,
+			name: '石家庄'
+		},
+		{
+			value: 7,
+			name: '保定'
+		},
+		{
+			value: 4,
+			name: '秦皇岛'
+		},
+		{
+			value: 4,
+			name: '唐山'
+		},
+		{
+			value: 3,
+			name: '张家口'
+		},
+		{
+			value: 2,
+			name: '承德'
+		},
+		{
+			value: 2,
+			name: '廊坊'
+		},
+		{
+			value: 2,
+			name: '邯郸'
+		},
+		{
+			value: 1,
+			name: '邢台'
+		},
+		{
+			value: 1,
+			name: '衡水'
+		},
+		{
+			value: 1,
+			name: '三河'
+		},
+		{
+			value: 1,
+			name: '天津市'
+		},
+		{
+			value: 1,
+			name: '沧州'
+		},
+	];
+	var option = {
+		title: {
+			text: '',
+			x: 'center'
+		},
+		tooltip: {
+			trigger: 'item',
+			formatter: "{a} <br/>{b} : {c} 所"
+		},
+		legend: {
+			orient: 'vertical',
+			x: 'left',
+			data: ['石家庄', '保定', '秦皇岛', '唐山', '张家口', '承德', '廊坊', '邯郸', '邢台', '衡水', '三河', '天津市', '沧州'],
+			textStyle: { //设置主标题风格
+				color: '#ffffff', //设置主标题字体颜色
+				fontSize: '18px',
+			}
+		},
+		toolbox: {
+			show: true,
+			feature: {
+				mark: {
+					show: true
+				},
+				dataView: {
+					show: true,
+					readOnly: false
+				},
+				magicType: {
+					show: true,
+					type: ['pie', 'funnel'],
+					option: {
+						funnel: {
+							x: '25%',
+							width: '60%',
+							funnelAlign: 'left',
+							max: 1548
+						}
+					}
+				},
+				restore: {
+					show: true
+				},
+				saveAsImage: {
+					show: true
+				}
+			}
+		},
+		calculable: true,
+		color: ['#39B3D7', '#e76565', "#e07b31", "#d19f2a", "#d1c92a", "#9ed12a", "#9ed12a", "#57d12a", "#2ad13e", "#2ad190", "#14a3a8", "#c6701b", "#D1402F"],
+		series: [{
+			name: '地区',
+			type: 'pie',
+			radius: '70%', //饼图的半径大小  
+			center: ['50%', '60%'], //饼图的位置  
+			data: json
+		}]
+	};
+
+	echartsPie = echarts.init(document.getElementById('echartsPie'));
+	$(function() {
+		echartsPie.setOption(option);
+
+	});
+</script>
